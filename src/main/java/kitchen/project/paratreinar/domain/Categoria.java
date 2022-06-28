@@ -1,18 +1,18 @@
 package kitchen.project.paratreinar.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
 
 @Entity
-public class Cliente implements Serializable {
+public class Categoria implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -20,21 +20,17 @@ public class Cliente implements Serializable {
 	private Integer id;
 	private String nome;
 
-	@Column(unique = true)
-	private String email;
+	@ManyToMany(mappedBy = "categorias")
+	private List<Produto> produtos = new ArrayList<>();
 
-	@OneToOne
-	@JoinColumn(name = "cozinha_id")
-	private Cozinha cozinha;
-
-	public Cliente() {
+	public Categoria() {
 
 	}
 
-	public Cliente(Integer id, String nome, String email) {
+	public Categoria(Integer id, String nome) {
+		super();
 		this.id = id;
 		this.nome = nome;
-		this.email = email;
 	}
 
 	public Integer getId() {
@@ -53,20 +49,12 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getEmail() {
-		return email;
+	public List<Produto> getProdutos() {
+		return produtos;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Cozinha getCozinha() {
-		return cozinha;
-	}
-
-	public void setCozinha(Cozinha cozinha) {
-		this.cozinha = cozinha;
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
 	}
 
 	@Override
@@ -82,7 +70,7 @@ public class Cliente implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Cliente other = (Cliente) obj;
+		Categoria other = (Categoria) obj;
 		return Objects.equals(id, other.id);
 	}
 
